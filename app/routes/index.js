@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/database");
 
-// 1. Halaman Home
+// Halaman Utama - List Menfess
 router.get("/", async (req, res) => {
   try {
     const [rows] = await db.query(
@@ -15,12 +15,12 @@ router.get("/", async (req, res) => {
   }
 });
 
-// 2. Halaman Create
+// Halaman Create Menfess
 router.get("/create", (req, res) => {
   res.render("create");
 });
 
-// 3. Proses Kirim (POST)
+// Handle Form Submission
 router.post("/send", async (req, res) => {
   const { sender, content, color } = req.body;
   if (!sender || !content) return res.redirect("/create");
@@ -36,5 +36,11 @@ router.post("/send", async (req, res) => {
     res.redirect("/create");
   }
 });
+
+// TODO: Tambahkan Route LIKE di sini
+// Clue: router.post('/like/:id', async (req, res) => { ... })
+
+// TODO: Tambahkan Route DISLIKE di sini
+// Clue: Mirip like, tapi yang ditambah kolom dislikes
 
 module.exports = router;

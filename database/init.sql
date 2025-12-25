@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS menfess (
     content TEXT NOT NULL,
     color VARCHAR(20) DEFAULT 'bg-white',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -- TODO : Tambahkan kolom likes & dislikes di bawah ini --
+    -- Clue: Gunakan tipe data INT dan DEFAULT 0 --
 );
 
 -- Dummy Data (Biar pas pertama run ga kosong melompong)
