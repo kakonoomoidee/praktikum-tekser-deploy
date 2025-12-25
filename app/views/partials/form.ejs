@@ -1,0 +1,192 @@
+<section class="max-w-xl mx-auto px-4 sm:px-6 pt-10 pb-8 relative z-10">
+  <div
+    class="absolute inset-0 top-12 mx-6 bg-slate-200 rounded-3xl transform rotate-3 scale-95 -z-10 shadow-lg border border-slate-300"
+  ></div>
+  <div
+    class="absolute inset-0 top-14 mx-8 bg-slate-100 rounded-3xl transform -rotate-2 scale-90 -z-20 shadow-sm border border-slate-200"
+  ></div>
+
+  <div
+    id="formCard"
+    class="bg-white rounded-3xl shadow-2xl border-2 border-slate-100 p-6 sm:p-8 relative overflow-hidden transition-all duration-300 transform"
+  >
+    <div
+      class="flex flex-col items-center justify-center mb-8 text-center space-y-4"
+    >
+      <h2 class="text-xl font-black text-slate-800 flex items-center gap-2">
+        ✨ Pilih Vibe Kartu
+      </h2>
+
+      <div
+        class="flex items-center gap-4 bg-white/50 backdrop-blur-sm px-4 py-2 rounded-full border border-black/5 shadow-sm"
+      >
+        <button
+          type="button"
+          onclick="cycleMood(-1)"
+          class="w-10 h-10 rounded-full bg-white hover:bg-slate-100 text-slate-700 shadow-sm border border-slate-200 flex items-center justify-center transition active:scale-90 group"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 group-hover:-translate-x-0.5 transition"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="3"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+
+        <div class="w-32 text-center">
+          <span
+            id="moodLabel"
+            class="text-sm font-extrabold text-slate-800 block"
+            >⚪ Netral</span
+          >
+          <span class="text-[10px] text-slate-500 font-medium">Mood 1/6</span>
+        </div>
+
+        <button
+          type="button"
+          onclick="cycleMood(1)"
+          class="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-900 text-white shadow-lg shadow-indigo-200 border border-transparent flex items-center justify-center transition active:scale-90 group"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 group-hover:translate-x-0.5 transition"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="3"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <form action="/send" method="POST" class="relative z-10">
+      <input
+        type="hidden"
+        name="color"
+        id="selectedColorInput"
+        value="bg-white"
+      />
+
+      <div class="mb-4">
+        <label
+          class="text-[10px] font-bold text-slate-500/80 uppercase tracking-wider ml-1 mb-1 block"
+          >Dari Siapa?</label
+        >
+        <input
+          type="text"
+          name="sender"
+          placeholder="Anonim / Inisial"
+          maxlength="30"
+          class="w-full px-5 py-3 rounded-2xl bg-white/60 backdrop-blur border border-black/5 text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-black/10 focus:bg-white transition placeholder:text-slate-400 placeholder:font-normal"
+          required
+        />
+      </div>
+
+      <div class="mb-6">
+        <div class="flex justify-between items-center mb-1 ml-1">
+          <label
+            class="text-[10px] font-bold text-slate-500/80 uppercase tracking-wider block"
+            >Isi Pesan</label
+          >
+          <span id="charCounter" class="text-[10px] font-bold text-slate-400"
+            >0/500</span
+          >
+        </div>
+
+        <textarea
+          name="content"
+          rows="4"
+          maxlength="500"
+          oninput="updateCounter(this)"
+          placeholder="Tulis sesuatu yang seru (Max 500 huruf)..."
+          class="w-full px-5 py-3 rounded-2xl bg-white/60 backdrop-blur border border-black/5 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-black/10 focus:bg-white transition resize-none placeholder:text-slate-400 placeholder:font-normal leading-relaxed"
+          required
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-2xl transition-all duration-300 transform active:scale-[0.98] shadow-xl flex justify-center items-center gap-2 group"
+      >
+        <span>Kirim Kartu Ini</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 group-hover:rotate-45 transition duration-300"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"
+          />
+        </svg>
+      </button>
+    </form>
+  </div>
+</section>
+
+<script>
+  // --- LOGIC GANTI WARNA KARTU ---
+  const deck = [
+    { class: "bg-white", label: "⚪ Netral" },
+    { class: "bg-red-100", label: "❤️ Love / Angry" },
+    { class: "bg-blue-100", label: "🌧️ Sad / Chill" },
+    { class: "bg-green-100", label: "🍀 Lucky / Happy" },
+    { class: "bg-yellow-100", label: "⚡ Excited" },
+    { class: "bg-purple-100", label: "🔮 Mysterious" },
+  ];
+
+  let currentIndex = 0;
+
+  function cycleMood(direction) {
+    const card = document.getElementById("formCard");
+    const label = document.getElementById("moodLabel");
+    const counter = label.nextElementSibling;
+    const hiddenInput = document.getElementById("selectedColorInput");
+
+    currentIndex = currentIndex + direction;
+    if (currentIndex >= deck.length) currentIndex = 0;
+    if (currentIndex < 0) currentIndex = deck.length - 1;
+
+    const selected = deck[currentIndex];
+
+    card.style.transform = "scale(0.98)";
+    setTimeout(() => (card.style.transform = "scale(1)"), 150);
+
+    deck.forEach((m) => card.classList.remove(m.class));
+    card.classList.add(selected.class);
+
+    label.innerText = selected.label;
+    counter.innerText = `Mood ${currentIndex + 1}/${deck.length}`;
+    hiddenInput.value = selected.class;
+  }
+
+  // --- LOGIC COUNTER HURUF ---
+  function updateCounter(field) {
+    const count = field.value.length;
+    const counterText = document.getElementById("charCounter");
+
+    counterText.innerText = `${count}/500`;
+
+    if (count >= 450) {
+      counterText.classList.remove("text-slate-400");
+      counterText.classList.add("text-red-500", "animate-pulse");
+    } else {
+      counterText.classList.add("text-slate-400");
+      counterText.classList.remove("text-red-500", "animate-pulse");
+    }
+  }
+</script>
