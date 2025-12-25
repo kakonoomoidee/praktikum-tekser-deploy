@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  # --- 1. DATABASE SERVICE ---
+  db_service:
+    image: mysql:8.0
+    container_name: db_${GROUP_NAME}
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - tekser-network
+
+  # --- 2. APP SERVICE ---
+  app_service:
+    build: ./app
+    container_name: app_${GROUP_NAME}
+    restart: always
+    expose:
+      - "3000"
+    environment:
+      - DB_HOST=db_service
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
+      - APP_PORT=3000
+    depends_on:
+      - db_service
+    networks:
+      - tekser-network
+
+  # --- 3. NGINX SERVICE ---
+  nginx_service:
+    image: nginx:alpine
+    container_name: nginx_${GROUP_NAME}
+    restart: always
+    ports:
+      - "${APP_PORT}:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app_service
+    networks:
+      - tekser-network
+
+#--- VOLUMES AND NETWORKS ---
+volumes:
+  db_data:
+    name: mysql_data_${GROUP_NAME}
+    driver: local
+
+networks:
+  tekser-network:
+    driver: bridge
+    name: net_tekser_${GROUP_NAME}

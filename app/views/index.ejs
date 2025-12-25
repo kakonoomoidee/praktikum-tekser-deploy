@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tekser Menfess</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 min-h-screen text-slate-800">
+    <nav
+      class="bg-white border-b border-slate-200 sticky top-0 z-50 bg-opacity-80 backdrop-blur-md"
+    >
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">👻</span>
+            <h1 class="text-xl font-extrabold tracking-tight text-slate-900">
+              Tekser<span class="text-indigo-600">Menfess</span>
+            </h1>
+          </div>
+          <div
+            class="text-xs font-medium bg-slate-100 px-3 py-1 rounded-full text-slate-500"
+          >
+            Anonymous Wall
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div
+        class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-10"
+      >
+        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+          📝 Kirim Pesan Rahasia
+        </h2>
+        <form action="/send" method="POST">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <input
+              type="text"
+              name="sender"
+              placeholder="Dari siapa? (Boleh nama samaran)"
+              class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              required
+            />
+
+            <select
+              name="color"
+              class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition bg-white"
+            >
+              <option value="bg-white">⚪ Putih Polos</option>
+              <option value="bg-red-100">🔴 Merah (Angry/Love)</option>
+              <option value="bg-blue-100">🔵 Biru (Sad/Chill)</option>
+              <option value="bg-green-100">🟢 Hijau (Happy)</option>
+              <option value="bg-yellow-100">🟡 Kuning (Excited)</option>
+              <option value="bg-purple-100">🟣 Ungu (Mysterious)</option>
+            </select>
+          </div>
+
+          <textarea
+            name="content"
+            rows="3"
+            placeholder="Tulis curhatanmu di sini..."
+            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition mb-4"
+            required
+          ></textarea>
+
+          <button
+            type="submit"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition transform active:scale-95 shadow-lg shadow-indigo-200"
+          >
+            Kirim Menfess 🚀
+          </button>
+        </form>
+      </div>
+
+      <div class="mb-6 flex items-center justify-between">
+        <h3 class="font-bold text-xl text-slate-700">Timeline Terbaru</h3>
+        <span class="text-sm text-slate-400"
+          >Total: <%= typeof messages !== 'undefined' ? messages.length : 0 %>
+          Menfess</span
+        >
+      </div>
+
+      <% if (typeof messages !== 'undefined' && messages.length > 0) { %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% messages.forEach(msg => { %>
+        <div
+          class="<%= msg.color %> p-6 rounded-2xl border border-black/5 shadow-sm hover:shadow-md transition duration-300 break-inside-avoid flex flex-col h-full"
+        >
+          <div class="flex-grow">
+            <p
+              class="text-slate-800 text-lg leading-relaxed whitespace-pre-wrap font-medium mb-4"
+            >
+              "<%= msg.content %>"
+            </p>
+          </div>
+          <div
+            class="mt-4 pt-4 border-t border-black/5 flex justify-between items-center text-xs text-slate-500"
+          >
+            <span class="font-bold text-slate-700"
+              >From: <%= msg.sender %></span
+            >
+            <span
+              ><%= new Date(msg.created_at).toLocaleTimeString('id-ID', {hour:
+              '2-digit', minute:'2-digit'}) %></span
+            >
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <% } else { %>
+      <div class="text-center py-20">
+        <p class="text-slate-400">
+          Belum ada menfess nih. Jadilah yang pertama! 🥺
+        </p>
+      </div>
+      <% } %>
+    </main>
+
+    <footer class="text-center py-8 text-slate-400 text-sm">
+      &copy; 2024 Praktikum Teknologi Server | Dockerized App
+    </footer>
+  </body>
+</html>
