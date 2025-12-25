@@ -12,7 +12,6 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // --- USE ROUTES ---
-// "Kalau ada yang akses '/', lempar ke mainRoutes"
 app.use("/", mainRoutes);
 
 // --- START SERVER ---
